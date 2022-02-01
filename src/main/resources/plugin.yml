@@ -1,6 +1,6 @@
 name: Xen
 version: '${version}'
-main: top.seatide.xen.Xen
+main: top.seatide.xen.Main
 api-version: 1.16
 prefix: Xen
 load: STARTUP
