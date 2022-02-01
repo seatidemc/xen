@@ -1,0 +1,9 @@
+name: Xen
+version: '${version}'
+main: top.seatide.xen.Xen
+api-version: 1.16
+prefix: Xen
+load: STARTUP
+authors: [ Subilan ]
+description: Simple multi-world control
+website: https://w.seatide.top/#/plugins/xen
