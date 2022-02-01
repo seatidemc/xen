@@ -70,12 +70,4 @@ public final class Files {
         cfg = load(".", "config.yml");
         worlds = load(".", "worlds.yml");
     }
-
-    public static void saveWorld(String name, String type, String env) {
-        var cs = worlds.createSection(name);
-        cs.set("type", type);
-        cs.set("enviroment", env);
-        worlds.set(name, cs);
-        save(worlds, "./worlds.yml");
-    }
 }
