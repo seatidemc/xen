@@ -10,6 +10,7 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         Files.init(this);
+        Worlds.init(this);
         Worlds.loadAll();
         var command = this.getServer().getPluginCommand("xen");
         if (command == null) {

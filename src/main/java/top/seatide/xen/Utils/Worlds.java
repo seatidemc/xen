@@ -5,12 +5,21 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.jetbrains.annotations.Nullable;
+import top.seatide.xen.Main;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class Worlds {
+    public static Main plug;
+
+    public static void init(Main plugin) {
+        plug = plugin;
+    }
 
     /**
      * 尝试加载所有 <code>worlds.yml</code> 中的 <code>key</code> 所指向的世界。
@@ -73,6 +82,13 @@ public class Worlds {
      */
     public static @Nullable World createOrLoadWorld(String name, WorldType type, World.Environment env) {
         return new WorldCreator(name).type(type == null ? WorldType.NORMAL : type).environment(env == null ? World.Environment.NORMAL : env).createWorld();
+    }
+
+    public static void createOrLoadWorldAsync(String name, WorldType type, World.Environment env, Consumer<World> callback) {
+        Bukkit.getScheduler().runTaskAsynchronously(plug, () -> {
+            var result = new WorldCreator(name).type(type == null ? WorldType.NORMAL : type).environment(env == null ? World.Environment.NORMAL : env).createWorld();
+            callback.accept(result);
+        });
     }
 
     /**

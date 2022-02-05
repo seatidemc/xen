@@ -42,6 +42,9 @@ public class CommandHandler implements TabExecutor {
                 case 1:
                     var candy = new ArrayList<String>();
                     for (var m : ARGS) {
+                        if (sender.hasPermission("xen.command.difficulty")) {
+                            candy.add("diff");
+                        }
                         if (sender.hasPermission("xen.command." + m)) {
                             candy.add(m);
                         }
@@ -118,12 +121,14 @@ public class CommandHandler implements TabExecutor {
                         LogUtil.send(sender, LogLevel.INFO, "输入 &e/xen help worldtype&8|&eenvtype &r查看可用的类型。");
                         return true;
                     }
-                    if (Worlds.createOrLoadWorld(name, type, env) == null) {
-                        LogUtil.send(sender, LogLevel.ERROR, args[0].equals("load") ? "加载" : "创建" + "失败，无法获取世界。");
-                        return true;
-                    }
-                    Worlds.saveAsRecord(name, type.name(), env.name());
-                    LogUtil.send(sender, LogLevel.SUCCESS, "成功" + (args[0].equals("load") ? "加载" : "创建") + "世界 &a" + name + "&r。");
+                    Worlds.createOrLoadWorldAsync(name, type, env, r -> {
+                        if (r == null) {
+                            LogUtil.send(sender, LogLevel.ERROR, args[0].equals("load") ? "加载" : "创建" + "失败，无法获取世界。");
+                        } else {
+                            Worlds.saveAsRecord(name, type.name(), env.name());
+                            LogUtil.send(sender, LogLevel.SUCCESS, "成功" + (args[0].equals("load") ? "加载" : "创建") + "世界 &a" + name + "&r。");
+                        }
+                    });
                     break;
                 }
 
