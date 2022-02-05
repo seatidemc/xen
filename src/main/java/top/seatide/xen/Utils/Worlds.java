@@ -7,6 +7,7 @@ import org.bukkit.WorldType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Worlds {
@@ -15,17 +16,38 @@ public class Worlds {
      * 尝试加载所有 <code>worlds.yml</code> 中的 <code>key</code> 所指向的世界。
      */
     public static void loadAll() {
-        Files.worlds.getKeys(false).forEach(worldName -> {
+        var worldNames = getAllRecordedWorldNames();
+        if (worldNames.size() == 0) return;
+        worldNames.forEach(worldName -> {
             var env = Files.worlds.getString(worldName + ".enviroment");
             var type = Files.worlds.getString(worldName + ".type");
             if (env != null && type != null) {
                 if (createOrLoadWorld(worldName, WorldType.getByName(type), getEnvironmentByName(env)) == null) {
-                    LogUtil.warn("加载世界 &e" + worldName + "&r 过程中出现问题。");
+                    LogUtil.error("加载世界 &e" + worldName + "&r 过程中出现问题。");
+                    LogUtil.error("若该世界的相关文件已被删除，请在 worlds.yml 中去掉相关信息。");
                 }
             } else {
-                LogUtil.error("由于相应配置信息缺失，无法正确加载世界 &e" + worldName + "&r。");
+                LogUtil.error("由于相关配置信息缺失，无法正确加载世界 &e" + worldName + "&r。");
             }
         });
+    }
+
+    public static void saveAllRecordedWorld() {
+       var targets = getAllRecordedWorldNames();
+       if (targets.size() == 0) return;
+       targets.forEach(name -> {
+           var world = Bukkit.getWorld(name);
+           if (world != null) {
+               world.save();
+               LogUtil.success("已保存世界 &a" + name + "&r。");
+           } else {
+               LogUtil.error("无法获取世界 &c" + name + "&r。");
+           }
+       });
+    }
+
+    public static Set<String> getAllRecordedWorldNames() {
+        return Files.worlds.getKeys(false);
     }
 
     /**
@@ -34,7 +56,7 @@ public class Worlds {
      * @param type 世界类型
      * @param env 世界环境类型
      */
-    public static void save(String name, String type, String env) {
+    public static void saveAsRecord(String name, String type, String env) {
         var cs = Files.worlds.createSection(name);
         cs.set("type", type.toUpperCase());
         cs.set("enviroment", env.toUpperCase());
@@ -59,7 +81,7 @@ public class Worlds {
      * @param includeDimension 是否包含 DIM-1、DIM1 等非独立世界维度
      * @return 世界名称列表
      */
-    public static List<String> getWorldNameList(boolean includeDimension) {
+    public static List<String> getLoadedWorldList(boolean includeDimension) {
         return Bukkit.getWorlds().stream()
                 .map(World::getName)
                 .distinct()
@@ -69,9 +91,9 @@ public class Worlds {
 
     public static World.Environment getEnvironmentByName(String name) {
         switch (name) {
-            case "normal": return World.Environment.NORMAL;
-            case "the-end": return World.Environment.THE_END;
-            case "nether": return World.Environment.NETHER;
+            case "NORMAL": return World.Environment.NORMAL;
+            case "THE_END": return World.Environment.THE_END;
+            case "NETHER": return World.Environment.NETHER;
             default: throw new IllegalArgumentException();
         }
     }
