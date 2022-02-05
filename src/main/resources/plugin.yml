@@ -3,7 +3,32 @@ version: '${version}'
 main: top.seatide.xen.Main
 api-version: 1.16
 prefix: Xen
-load: STARTUP
+load: POSTWORLD
 authors: [ Subilan ]
 description: Simple multi-world control
 website: https://w.seatide.top/#/plugins/xen
+commands:
+  xen:
+    aliases: ['x']
+    permission: xen.command
+    permission-message: "You do not have the permission to use the command."
+    usage: The command is invalid or you don't have the permission to use it.
+permissions:
+  xen.command:
+    default: true
+  xen.command.load:
+    default: op
+  xen.command.unload:
+    default: op
+  xen.command.reloadPlugin:
+    default: op
+  xen.command.create:
+    default: op
+  xen.command.tp:
+    default: true
+  xen.command.rule:
+    default: op
+  xen.command.difficulty:
+    default: op
+  xen.command.help:
+    default: true
