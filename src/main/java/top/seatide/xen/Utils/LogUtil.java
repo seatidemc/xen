@@ -26,11 +26,13 @@ public class LogUtil {
     }
 
     public static void send(CommandSender p, String msg) {
-        p.sendMessage(translate(getPrefixForSender(p, LogLevel.SEATIDE).stripTrailing() + msg));
+        p.sendMessage(translate(getPrefixForSender(p, LogLevel.SEATIDE)
+                + (p instanceof Player ? msg : msg.replaceAll("&(\\d|k|m|n|o|l|a|b|c|d|e|f)", ""))));
     }
 
     public static void send(CommandSender p, LogLevel prefix, String msg) {
-        p.sendMessage(translate(getPrefixForSender(p, LogLevel.SEATIDE).stripTrailing() + getPrefixForSender(p, prefix)) + msg);
+        p.sendMessage(translate(getPrefixForSender(p, LogLevel.SEATIDE) + getPrefixForSender(p, prefix)
+                + (p instanceof Player ? msg : msg.replaceAll("&(\\d|k|m|n|o|l|a|b|c|d|e|f)", ""))));
     }
 
     public static String getPrefixForSender(CommandSender p, LogLevel prefix) {
