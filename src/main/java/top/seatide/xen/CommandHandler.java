@@ -38,45 +38,43 @@ public class CommandHandler implements TabExecutor {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         var result = new ArrayList<String>();
         if (command.getName().equalsIgnoreCase("xen")) {
-            if (args.length == 1) {
-                var candy = new ArrayList<String>();
-                for (var m : ARGS) {
-                    if (sender.hasPermission("xen.command." + m)) {
-                        candy.add(m);
-                    }
-                }
-                return getResult(args[0], candy);
-            }
-            if (args.length == 2) {
-                if (args[0].equals("load")|| args[0].equals("create") || args[0].equals("unload") || args[0].equals("tp")) {
-                    return Bukkit.getWorlds().stream().map(World::getName).distinct().collect(Collectors.toList());
-                }
-                if (args[0].equals("rule")) return List.of("get", "set");
-            }
-
-            if (args.length == 3) {
-                if (args[0].equals("load") || args[0].equals("create")) {
-                    return List.of("NORMAL", "FLAT", "LARGE_BIOMES", "AMPLIFIED");
-                }
-                if (args[0].equals("rule")) return Bukkit.getWorlds().stream().map(World::getName).distinct().collect(Collectors.toList());
-            }
-
-            if (args.length == 4) {
-                if (args[0].equals("load") || args[0].equals("create")) {
-                    return List.of("NORMAL", "NETHER", "THE_END");
-                }
-                if (args[0].equals("rule")) return Arrays.stream(GameRule.values()).map(GameRule::getName).distinct().collect(Collectors.toList());
-            }
-
-            if (args.length == 5) {
-                if (args[0].equals("rule")) {
-                    var rule = GameRule.getByName(args[3]);
-                    if (rule != null) {
-                        if (rule.getType() == Boolean.class) {
-                            return List.of("true", "false");
+            switch (args.length) {
+                case 1:
+                    var candy = new ArrayList<String>();
+                    for (var m : ARGS) {
+                        if (sender.hasPermission("xen.command." + m)) {
+                            candy.add(m);
                         }
                     }
-                }
+                    return getResult(args[0], candy);
+                case 2:
+                    if (args[0].equals("load")|| args[0].equals("create") || args[0].equals("unload") || args[0].equals("tp")) {
+                        return Bukkit.getWorlds().stream().map(World::getName).distinct().collect(Collectors.toList());
+                    }
+                    if (args[0].equals("rule")) return List.of("get", "set");
+                    break;
+                case 3:
+                    if (args[0].equals("load") || args[0].equals("create")) {
+                        return List.of("NORMAL", "FLAT", "LARGE_BIOMES", "AMPLIFIED");
+                    }
+                    if (args[0].equals("rule")) return Bukkit.getWorlds().stream().map(World::getName).distinct().collect(Collectors.toList());
+                    break;
+                case 4:
+                    if (args[0].equals("load") || args[0].equals("create")) {
+                        return List.of("NORMAL", "NETHER", "THE_END");
+                    }
+                    if (args[0].equals("rule")) return Arrays.stream(GameRule.values()).map(GameRule::getName).distinct().collect(Collectors.toList());
+                    break;
+                case 5:
+                    if (args[0].equals("rule")) {
+                        var rule = GameRule.getByName(args[3]);
+                        if (rule != null) {
+                            if (rule.getType() == Boolean.class) {
+                                return List.of("true", "false");
+                            }
+                        }
+                    }
+                    break;
             }
         }
         return result;
