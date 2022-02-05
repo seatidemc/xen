@@ -11,11 +11,19 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         Files.init(this);
         Worlds.loadAll();
+        var command = this.getServer().getPluginCommand("xen");
+        if (command == null) {
+            LogUtil.error("无法找到插件指令。");
+        } else {
+            command.setExecutor(new CommandHandler());
+            command.setTabCompleter(new CommandHandler());
+        }
         LogUtil.success("Xen 已启用。");
     }
 
     @Override
     public void onDisable() {
+        Worlds.saveAllRecordedWorld();
         LogUtil.success("Xen 已停用。");
     }
 }
