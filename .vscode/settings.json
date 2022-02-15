@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/bukkit-plugin.json": "file:///f%3A/code/seatide/Xen/src/main/resources/plugin.yml"
+    }
+}
