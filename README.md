@@ -13,8 +13,9 @@
 - [ ] 为玩家或组设置默认出生世界（加入时的世界）
 - [ ] 设置世界的独立游戏模式
 - [ ] 更多简单的功能
+- [ ] 动态删除、卸载世界
 
-Xen 的实现借助于 Bukkit 自带的一些简单的函数，可以作为 Multiverse 等插件的*平替*。其余的较高级功能，例如 Generator 等不会提供。有关配置文件和指令用法，详见 [Wiki](https://w.seatide.top/plugins/xen)。
+Xen 的实现借助于 Bukkit 自带的一些简单的函数，可以作为 Multiverse 等插件的*平替*。如果你只需要导入世界和跨世界传送，那么 Xen 适合你。而较高级功能，例如自定义的世界生成器等，Xen 短期内不会提供。有关配置文件和指令用法，详见 [Wiki](https://w.seatide.top/plugins/xen)。
 
 ## 协议
 
