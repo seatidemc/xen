@@ -9,6 +9,7 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        LogUtil.init();
         Files.init(this);
         Worlds.init(this);
         Worlds.loadAll();

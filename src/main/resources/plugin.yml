@@ -6,7 +6,7 @@ prefix: Xen
 load: POSTWORLD
 authors: [ Subilan ]
 description: Simple multi-world control
-website: https://w.seatide.top/#/plugins/xen
+website: https://w.seatide.top/plugins/xen
 commands:
   xen:
     aliases: ['x']
@@ -32,3 +32,7 @@ permissions:
     default: op
   xen.command.help:
     default: true
+  xen.command.list:
+    default: true
+  xen.command.setworldspawn:
+    default: op
